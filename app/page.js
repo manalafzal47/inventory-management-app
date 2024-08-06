@@ -1,95 +1,129 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client'
+
+import { useState, useEffect } from 'react'
+import { Box, Stack, Typography, Button, Modal, TextField } from '@mui/material'
+import { firestore } from '@/firebase'
+
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  setDoc,
+  deleteDoc,
+  getDoc,
+} from 'firebase/firestore'
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'white',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 3,
+}
 
 export default function Home() {
+
+  const [item, setItem]= useState('');
+  const [open, setOpen] = useState(false);
+  const [inventory, setInventory] = useState([])
+
+  const resetInventory = async () =>{
+    // need to add new item to inventory 
+    try {
+      const q = query(collection(firestore, "inventory"));
+      const docs = await getDocs(q);
+      const newItem = []
+      docs.forEach((doc)=>{
+        newItem.push ({
+          name: doc.id, 
+          ...doc.data(),
+      });
+      });
+      setInventory(newItem);
+    }
+    catch(e){
+      console.error(e);
+    }
+  };
+  
+  useEffect(()=>{
+    resetInventory();
+  }, [])
+
+  const handleDeleteItem = async(item) => {
+    const docRef = doc(collection(firestore, "inventory"), item);
+    const docSnap = await getDoc(docRef);
+
+    if(docSnap.exists()){
+      const {quantity} = docSnap.data();
+
+    // check if the item exists in the collection, if it does remove it from the collection
+      if (quantity === 1){
+        await deleteDoc(docRef)
+      }
+
+    // otheriwse if it already exists in the collection then decrement the count by one 
+      else{
+        await setDoc(docRef, {
+          quantity: quantity - 1,
+        });
+      }
+
+      await resetInventory();
+    }
+  }
+
+  const handleAddItem = async() => {
+      const docRef = doc(collection(firestore, "inventory"), item);
+      const docSnap = await getDoc(docRef);  
+
+      if(docSnap.exists()){
+        const {quantity} = docSnap.data();
+          await setDoc(docRef, {
+            quantity: quantity+1,
+        })}
+        
+      else {
+        await setDoc(docRef, {quantity: 1})
+      }
+      await resetInventory();
+  }
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+    <Box>
+      <Typography variant="h1">Inventory Management</Typography>
+      <TextField
+        label="Item Name"
+        value={item}
+        onChange ={(e) => setItem(e.target.value)
+        }
+      />
+      <Button variant = "contained" onClick={()=>handleAddItem()}>
+        Add Item
+      </Button>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+      <Button variant="contained" onClick={()=>handleDeleteItem(item)}>
+        Delete Item
+      </Button>
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+      <Button variant = "contained" onClick={() => resetInventory()}>
+        Update Item
+      </Button>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+      {inventory.map(item=>(
+        <Box key={item.name}>
+          <Typography variant = "h6">{item.name}</Typography>
+          <Typography>Quanity: {item.quantity}</Typography>    
+        </Box>    
+      ))}
+    </Box>
+  )
 }
