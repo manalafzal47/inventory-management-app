@@ -228,3 +228,54 @@
     transform: rotate(0deg);
   }
 }
+
+
+.title{
+  font-size: 60px;;
+}
+
+.item-container{
+  background-color:white;
+  border-radius:10px;
+  /* margin:10px;
+  padding:5px; */
+  width:50%;
+  height:100%;
+  color:black;
+}
+
+.search-bar-container{
+  background-color: white;
+  border-radius:5px;
+  margin:5px;
+}
+
+.add-item-container{
+  background-color:green;
+  border-radius:5px;
+  margin:5px;
+}
+
+.delete-item-container{
+  background-color:red;
+  border-radius:5px;
+  margin:5px;
+
+}
+
+.update-item-container{
+  background-color:purple;
+  border-radius:5px;
+  margin:5px;
+
+}
+
+.modal-container{
+  background-color:white;
+  radius:1px solid black;
+  width: 20%;
+  height:40px;
+  margin:10px;
+  color: black;
+}
+

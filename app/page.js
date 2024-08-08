@@ -1,8 +1,14 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Box, Stack, Typography, Button, Modal, TextField } from '@mui/material'
+import { useState, useEffect, useRef } from 'react'
+import { Box, Stack, Typography, Button, TextField } from '@mui/material'
 import { firestore } from '@/firebase'
+import {Camera} from "react-camera-pro";
+import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
+import styles from "./page.css";
+// import { Modal } from '@mui/base/Modal';
+import { Modal } from '@mui/base/Modal';
 
 import {
   collection,
@@ -30,10 +36,23 @@ const style = {
 }
 
 export default function Home() {
-
   const [item, setItem]= useState('');
-  const [open, setOpen] = useState(false);
   const [inventory, setInventory] = useState([])
+
+  const camera = useRef (null);
+  const [image, setImage] = useState(null);
+  const [images, setImages] = useState([]);
+
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
+
+  const [newEditedItem, setNewEditedItem] = useState(null);
+  const [newQuantity, setQuantity] = useState(0);
+
+  const [open, setOpen] = useState(false);
+
+  const [newName, setNewName] = useState('');
+
+  const [edited, setEdited]= useState(false);
 
   const resetInventory = async () =>{
     // need to add new item to inventory 
@@ -57,7 +76,7 @@ export default function Home() {
   useEffect(()=>{
     resetInventory();
   }, [])
-
+  
   const handleDeleteItem = async(item) => {
     const docRef = doc(collection(firestore, "inventory"), item);
     const docSnap = await getDoc(docRef);
@@ -70,7 +89,7 @@ export default function Home() {
         await deleteDoc(docRef)
       }
 
-    // otheriwse if it already exists in the collection then decrement the count by one 
+    // otherwise if it already exists in the collection then decrement the count by one 
       else{
         await setDoc(docRef, {
           quantity: quantity - 1,
@@ -95,35 +114,117 @@ export default function Home() {
         await setDoc(docRef, {quantity: 1})
       }
       await resetInventory();
+      setItem('');
+  }
+
+  const handleEdit = async() => {
+    if(newEditedItem){
+      const oldRef = doc(collection(firestore, "inventory"), newEditedItem)
+      const newRef = doc(collection(firestore, "inventory"), newName);
+
+      if(newEditedItem.name !== newName){
+        await deleteDoc(oldRef)
+      }
+
+        await setDoc(newRef, {
+          quantity: newQuantity,
+        })
+    
+    await resetInventory();
+    handleClose();
+    }
+  }
+
+  function openModal(item){
+    setOpen(true);
+    setNewEditedItem(item);
+    setNewName(item.name);
+    setQuantity(item.quantity);
+  }
+
+  function handleClose() {
+    setOpen(false);
   }
 
   return (
     <Box>
-      <Typography variant="h1">Inventory Management</Typography>
-      <TextField
-        label="Item Name"
+      <Typography className="title"variant="h1">Pantry Pro</Typography>
+      
+      <TextField className="search-bar-container"
+        id="outlined-controlled"
+        label="Search"
         value={item}
         onChange ={(e) => setItem(e.target.value)
-        }
+      }
       />
-      <Button variant = "contained" onClick={()=>handleAddItem()}>
+
+      <Button className="add-item-container" variant = "contained" onClick={()=>handleAddItem()}>
         Add Item
       </Button>
 
-      <Button variant="contained" onClick={()=>handleDeleteItem(item)}>
+      <Button className="delete-item-container" variant="contained" onClick={()=>handleDeleteItem(item)}>
         Delete Item
       </Button>
 
-      <Button variant = "contained" onClick={() => resetInventory()}>
-        Update Item
-      </Button>
+      <Box className="items-container">
+        {inventory.map(item=>(
+            (<Box className="item-container" key={item.name}>
+              <Typography variant = "h6">{item.name}</Typography>
+              <Typography>Quanity: {item.quantity}</Typography>
+              <Button className="update-item-container" variant = "contained" onClick={()=>openModal(item)}>
+              Edit Item
+            </Button>             
+          </Box>  )  
+        ))}
+      </Box>
 
-      {inventory.map(item=>(
-        <Box key={item.name}>
-          <Typography variant = "h6">{item.name}</Typography>
-          <Typography>Quanity: {item.quantity}</Typography>    
-        </Box>    
-      ))}
+      <Modal open={open} onClose={handleClose}>
+            <Box>
+            <Typography variant="h6">Edit Item</Typography>
+            <TextField className="modal-container"
+              label="Item Name"
+              value={newName} 
+              onChange={(e)=>setNewName(e.target.value)}
+            />
+
+            <TextField className="modal-container"
+              label="Enter new quantity"
+              type="number"
+              value={newQuantity} 
+              onChange={(e) => setQuantity(parseInt(e.target.value))}
+              />
+
+            <Button onClick={handleEdit}>
+              Submit New Edit
+            </Button>
+
+            <Button onClick={handleClose}>
+              Close Modal
+            </Button>
+            </Box>
+        </Modal>
+
+      {isCameraOpen && 
+        (<Camera ref={camera}/>)}
+          {image && <img src={image} alt="image preview"/>}
+        <Button
+            variant = "contained"
+            onClick={()=>{
+              if(isCameraOpen){
+                const photo=camera.current.takePhoto();
+                setImage(photo);
+                setImages((prevImages)=>photo, ...images); 
+              }
+            }}>
+          {isCameraOpen ? "Take Photo": "Close Camera"}
+        </Button>
+
+        <Button
+          variant = "contained"
+          onClick={() => setIsCameraOpen(!isCameraOpen)}>
+            {isCameraOpen ? "Close Camera": "Take Photo"}
+        </Button>
     </Box>
   )
 }
+
