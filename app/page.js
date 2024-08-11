@@ -7,7 +7,6 @@ import {Camera} from "react-camera-pro";
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import styles from "./page.css";
-// import { Modal } from '@mui/base/Modal';
 import { Modal } from '@mui/base/Modal';
 
 import {
@@ -119,7 +118,7 @@ export default function Home() {
 
   const handleEdit = async() => {
     if(newEditedItem){
-      const oldRef = doc(collection(firestore, "inventory"), newEditedItem)
+      const oldRef = doc(collection(firestore, "inventory"), newEditedItem.name)
       const newRef = doc(collection(firestore, "inventory"), newName);
 
       if(newEditedItem.name !== newName){
@@ -147,8 +146,8 @@ export default function Home() {
   }
 
   return (
-    <Box>
-      <Typography className="title"variant="h1">Pantry Pro</Typography>
+    <Box className="center-box">
+      <Typography className="title"variant="h1">Pantry Pro AI</Typography>
       
       <TextField className="search-bar-container"
         id="outlined-controlled"
@@ -158,53 +157,17 @@ export default function Home() {
       }
       />
 
-      <Button className="add-item-container" variant = "contained" onClick={()=>handleAddItem()}>
-        Add Item
-      </Button>
-
-      <Button className="delete-item-container" variant="contained" onClick={()=>handleDeleteItem(item)}>
-        Delete Item
-      </Button>
-
-      <Box className="items-container">
-        {inventory.map(item=>(
-            (<Box className="item-container" key={item.name}>
-              <Typography variant = "h6">{item.name}</Typography>
-              <Typography>Quanity: {item.quantity}</Typography>
-              <Button className="update-item-container" variant = "contained" onClick={()=>openModal(item)}>
-              Edit Item
-            </Button>             
-          </Box>  )  
-        ))}
-      </Box>
-
-      <Modal open={open} onClose={handleClose}>
-            <Box>
-            <Typography variant="h6">Edit Item</Typography>
-            <TextField className="modal-container"
-              label="Item Name"
-              value={newName} 
-              onChange={(e)=>setNewName(e.target.value)}
-            />
-
-            <TextField className="modal-container"
-              label="Enter new quantity"
-              type="number"
-              value={newQuantity} 
-              onChange={(e) => setQuantity(parseInt(e.target.value))}
-              />
-
-            <Button onClick={handleEdit}>
-              Submit New Edit
-            </Button>
-
-            <Button onClick={handleClose}>
-              Close Modal
-            </Button>
-            </Box>
-        </Modal>
-
-      {isCameraOpen && 
+    <Box className="items-main-container">
+      <Box className="text-container">
+        <Box className="btns-toggle-container">
+          <Box className="newItems-container">
+          <Box><h2 className="new-item-title">Add new item to pantry</h2></Box>
+          <Button className="add-item-container" variant = "contained" onClick={()=>handleAddItem()}>
+            Add Item
+          </Button>
+         
+        <Box className="camera-container">
+          {isCameraOpen && 
         (<Camera ref={camera}/>)}
           {image && <img src={image} alt="image preview"/>}
         <Button
@@ -224,6 +187,65 @@ export default function Home() {
           onClick={() => setIsCameraOpen(!isCameraOpen)}>
             {isCameraOpen ? "Close Camera": "Take Photo"}
         </Button>
+        </Box>
+
+        </Box>
+        </Box>
+
+        <Box className="btns-toggle-container">
+          <Box className="inner-delete-items-container"> 
+          <h2 className="delete-btn-title"> Delete item from pantry! </h2>
+            <Button className="delete-item-container" variant="contained" onClick={()=>handleDeleteItem(item)}>
+              Delete Item
+            </Button>
+        </Box>
+        </Box>
+      </Box>
+
+      <Box className="items-container">
+        <h1 className="items-container-title">Add any items to get started!</h1>
+          {inventory.map(item=>(
+              (<Box className="item-container" key={item.name}>
+                <Box className="items-container-text"><Typography variant = "h6">{item.name}</Typography>
+                <Typography>Quanity: {item.quantity}</Typography>
+                </Box>
+                <Button className="update-item-container" variant = "contained" onClick={()=>openModal(item)}>
+                Edit Item
+              </Button>             
+            </Box>  )  
+          ))}
+        </Box>
+      </Box>
+
+      <Modal className="modal-container" open={open} onClose={handleClose}>
+            <Box>
+            
+            <Typography className="modal-title" variant="h6">Edit Item</Typography>
+            <TextField className="modal-text-container"
+              label="Item Name"
+              value={newName} 
+              onChange={(e)=>setNewName(e.target.value)}
+            />
+
+            <TextField className="modal-text-container"
+              label="Enter new quantity"
+              type="number"
+              value={newQuantity} 
+              onChange={(e) => setQuantity(parseInt(e.target.value))}
+              />
+
+          <Box className="btn-container">
+            <Button className="submit-btn" onClick={handleEdit}>
+              Submit New Edit
+            </Button>
+
+            <Button className="closeModal-btn" onClick={handleClose}>
+              Close Modal
+            </Button>
+            </Box>
+            </Box>
+        </Modal>
+
     </Box>
   )
 }

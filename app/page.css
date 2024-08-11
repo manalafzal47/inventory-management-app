@@ -132,6 +132,24 @@
     padding: 4rem;
   }
 
+  body{
+    background-color: #161616;
+    color: #fff;
+  }
+
+  header {
+    background-color: #3d3d3d;
+    color: #fff;
+  }
+
+  input[text="text"]{
+    background-color: #2b2b2b;
+    color: #fff;
+    border:none;
+    padding:10px;
+    border-radius:5px;
+  }
+
   .grid {
     grid-template-columns: 1fr;
     margin-bottom: 120px;
@@ -185,7 +203,6 @@
       rgba(var(--callout-rgb), 0.5)
     );
     background-clip: padding-box;
-    backdrop-filter: blur(24px);
   }
 
   .description div {
@@ -231,51 +248,243 @@
 
 
 .title{
-  font-size: 60px;;
+  font-size: 50px;
+  text-align:center;
+  margin:10px;
+
+}
+
+.items-container{
+  background-color: #2b2b2b; 
+  border-radius: 10px; 
+  border: 1px solid #444; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+  padding: 20px; 
+  margin: 20px auto; 
+  display: inline-block; 
+  text-align: center; 
+  width: 100%;
+  white-space:nowrap;
+  max-height: 2000px;
+  max-width: 600px;
+
 }
 
 .item-container{
-  background-color:white;
+  display:flex;
+  margin:10px;
+}
+
+.items-main-container {
+  background-color: #1d1c1c;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px; 
+  box-sizing: border-box; 
+  max-width: 1200px;
+}
+
+.text-container{
+  align-items:center;
+  margin:20px;
+  padding:10px;
+}
+
+.newItems-container{
+  background-color: #2b2b2b; 
+  border-radius: 10px;
+  border: 1px solid #444; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+  padding: 10px 15px; 
+  margin: 20px auto; 
+  display: inline-block; 
+  text-align: center; 
+  width: auto;
+  white-space:nowrap;
+}
+
+.new-item-title {
+  font-size: 1.2rem; 
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 15px; 
+}
+
+.add-item-container,
+.camera-container button {
+  background-color: #1E90FF; 
+  color: #ffffff;
+  border: none;
+  border-radius: 5px; 
+  padding: 10px 15px;
+  margin: 10px 0; 
+  width: auto;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease; 
+}
+
+.add-item-container:hover,
+.camera-container button:hover {
+  background-color: #1C86EE; 
+  transform: translateY(-2px); 
+}
+
+.add-item-container:active,
+.camera-container button:active {
+  transform: translateY(0); 
+}
+
+.newItems-container h2, .newItems-container button {
+  margin: 10px 0;
+  text-align: center;
+  width: 100%;
+}
+
+.btns-toggle-container{
+  background-color: #2b2b2b; 
+  width:60%;
   border-radius:10px;
-  /* margin:10px;
-  padding:5px; */
-  width:50%;
-  height:100%;
-  color:black;
+  margin:20px;
+  padding:20px;
+  box-sizing:border-box;
+  width: auto;
+  white-space:nowrap;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
 }
 
-.search-bar-container{
+.inner-delete-items-container{
+  background-color: #1E90FF; 
+  color: #ffffff;
+  border: none;
+  border-radius: 5px; 
+  padding: 10px 15px;
+  margin: 10px 0; 
+  width: auto;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease; 
+}
+
+.inner-delete-items-container,
+ button:hover {
+  background-color: #1C86EE; 
+  transform: translateY(-2px); 
+}
+
+.inner-delete-items-container:active,
+ button:active {
+  transform: translateY(0); 
+}
+
+.inner-delete-items-container{
+  background-color: #2b2b2b; 
+}
+
+.btns-toggle-container h2, .btns-toggle-container button {
+  margin: 10px 0;
+  text-align: center;
+  width: 100%;
+}
+
+.btns-toggle-container:hover,
+button:hover {
+  background-color: #1C86EE; 
+  transform: translateY(-2px); 
+}
+
+.btns-toggle-container:active,
+button:active {
+  transform: translateY(0); 
+}
+
+.camera-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 10px;
+  width: auto;
+}
+
+/* Search bar container */
+.search-bar-container {
   background-color: white;
-  border-radius:5px;
-  margin:5px;
+  border-radius: 5px;
+  padding: 10px;
+  box-sizing: border-box;
+  justify-content: center; 
+  margin: 0 auto;
+  align-content:center;
 }
 
+.items-container-text{
+  display:flex;
+  gap:20px;
+  width: 100%;
+  max-width: 600px;
+}
+
+/* Button styles */
 .add-item-container{
-  background-color:green;
-  border-radius:5px;
-  margin:5px;
+  margin: 5px auto; 
+  width: 80%; 
 }
 
 .delete-item-container{
-  background-color:red;
-  border-radius:5px;
-  margin:5px;
+  margin: 5px auto; 
+  width: 80%; 
+  box-sizing: border-box;
+}
 
+.delete-btn-title{
+  align-text:center;
+  font-size: 20px;
 }
 
 .update-item-container{
-  background-color:purple;
-  border-radius:5px;
-  margin:5px;
+  margin: 5px auto;
+  width: 20%; 
 
 }
 
-.modal-container{
+.modal-title{
+  color:black;
+}
+
+.modal-container {
   background-color:white;
-  radius:1px solid black;
+  width:50%;
+  border-radius: 10px;
+  margin:20px;
+  display:flex;
+  align-content: center;
+  justify-content:center;
+  margin: 0 auto;
+}
+
+.modal-text-container{
+  background-color:white;
   width: 20%;
   height:40px;
   margin:10px;
   color: black;
+}
+
+.btn-container{
+  display:flex;
+  margin:10px;
+}
+
+.submit-btn{
+  background-color: #497ad6;
+  color:white;
+  margin:6px;
+}
+
+.closeModal-btn{
+  background-color: #497ad6;
+  color:white;
+  margin:6px;
 }
 
