@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Pantry Tracker
 
-## Getting Started
+Pantry Tracker is a simple yet powerful application that helps you keep track of your pantry items. With this app, you can easily add new items, edit existing ones, and delete items that you no longer need. It's built with a modern tech stack, including React, Firebase Firestore, and Material-UI.
 
-First, run the development server:
+## Features
 
-```bash
+Add New Items: Quickly add new items to your pantry with just a few clicks.
+
+Edit Items: Easily update the name or quantity of items already in your pantry.
+
+Delete Items: Remove items from your pantry when you no longer need them.
+
+Camera Integration: Capture images of your pantry items using your device's camera.
+
+## Installation
+To get started with Pantry Tracker, follow these steps:
+
+Clone the Repository:
+
+git clone https://github.com/yourusername/pantry-tracker.git
+cd pantry-tracker
+
+Install Dependencies:
+
+npm install
+
+Run the Development Server:
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 to view the app in the browser.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Add New Items
+Enter the name of the item in the search bar.
 
-## Learn More
+Click the "Add Item" button.
 
-To learn more about Next.js, take a look at the following resources:
+The item will be added to your pantry list.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Edit Items
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Click the "Edit Item" button next to the item you want to edit.
 
-## Deploy on Vercel
+In the modal that appears, update the item’s name or quantity.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Click "Submit New Edit" to save your changes or "Close Modal" to exit the modal.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Delete Items
+
+Enter the name of the item you want to delete in the search bar.
+
+Click the "Delete Item" button.
+
+The item will be removed from your pantry list.
+
+
+
