@@ -147,15 +147,20 @@ export default function Home() {
 
   return (
     <Box className="center-box">
-      <Typography className="title"variant="h1">Pantry Pro AI</Typography>
-      
-      <TextField className="search-bar-container"
-        id="outlined-controlled"
-        label="Search"
-        value={item}
-        onChange ={(e) => setItem(e.target.value)
-      }
-      />
+      <Box className="mainTitle-container">
+        <Typography className="title"variant="h1">Pantry Pro AI</Typography>
+        
+        <Box className="search-bar-container">
+        <TextField 
+          id="outlined-controlled"
+          label="Search"
+          value={item}
+          onChange ={(e) => setItem(e.target.value)
+        }
+        fullWidth
+        />
+        </Box>
+    </Box>
 
     <Box className="items-main-container">
       <Box className="text-container">

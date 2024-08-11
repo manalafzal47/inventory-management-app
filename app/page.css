@@ -246,12 +246,19 @@
   }
 }
 
-
 .title{
   font-size: 50px;
   text-align:center;
   margin:10px;
+}
 
+.mainTitle-container{
+  display:flex;
+  flex-direction: column;
+  text-align:center;
+  justify-content:center;
+  margin-bottom: 20px;
+  align-items:center;
 }
 
 .items-container{
@@ -368,7 +375,6 @@
 
 .inner-delete-items-container,
  button:hover {
-  background-color: #1C86EE; 
   transform: translateY(-2px); 
 }
 
@@ -409,13 +415,12 @@ button:active {
 
 /* Search bar container */
 .search-bar-container {
+  width: 100%; /* Full width */
+  max-width: 600px; /* Limit maximum width */
+  margin: 0 auto; /* Center the search bar */
+  padding: 10px; /* Optional: padding for better spacing */
   background-color: white;
   border-radius: 5px;
-  padding: 10px;
-  box-sizing: border-box;
-  justify-content: center; 
-  margin: 0 auto;
-  align-content:center;
 }
 
 .items-container-text{
